@@ -92,7 +92,7 @@ export default function Header() {
             <button onClick={resetInput} className="flex-grow text-gray-500">
               Cancel
             </button>
-            <button onClick={} className="flex-grow text-red-400">Search</button>
+            <button className="flex-grow text-red-400">Search</button>
           </div>
         </div>
       )}

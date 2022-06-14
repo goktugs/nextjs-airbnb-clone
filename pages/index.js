@@ -4,6 +4,7 @@ import Banner from '../components/Banner';
 import SmallCard from '../components/SmallCard';
 import MediumCard from '../components/MediumCard';
 import LargeCard from '../components/LargeCard';
+import Footer from '../components/Footer';
 
 export default function Home({ placesData, cardData }) {
   return (
@@ -46,7 +47,7 @@ export default function Home({ placesData, cardData }) {
         />
       </main>
 
-      <footer />
+      <Footer />
     </div>
   );
 }

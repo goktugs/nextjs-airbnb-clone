@@ -10,12 +10,15 @@ import {
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { DateRangePicker } from 'react-date-range';
+import { useRouter } from 'next/router';
 
-export default function Header() {
+export default function Header({ placeholder }) {
   const [searchInput, setSearchInput] = useState('');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [numOfGuest, setNumOfGuest] = useState(1);
+
+  const router = useRouter();
 
   const selectionRange = {
     startDate: startDate,
@@ -32,9 +35,26 @@ export default function Header() {
     setSearchInput('');
   };
 
+  const search = () => {
+    router.push({
+      pathname: '/search',
+      query: {
+        location: searchInput,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        numOfGuest,
+      },
+    });
+  };
+
   return (
     <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-lg p-5 md:px-10">
-      <div className="relative flex items-center cursor-pointer my-auto h-10">
+      <div
+        onClick={() => {
+          router.push('/');
+        }}
+        className="relative flex items-center cursor-pointer my-auto h-10"
+      >
         <Image
           src="/Airbnb_Logo.png"
           layout="fill"
@@ -48,10 +68,16 @@ export default function Header() {
         <input
           className="pl-5 bg-transparent outline-none flex-grow text-sm text-gray-600 placeholder-gray-400"
           type="text"
-          placeholder="Start Your Search"
+          placeholder={placeholder ? placeholder : 'Start Your Search'}
           value={searchInput}
           onChange={(e) => {
             setSearchInput(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              setSearchInput(e.target.value);
+              search();
+            }
           }}
         />
         <SearchIcon className="h-8 bg-red-400 text-white rounded-full p-2 cursor-pointer hidden md:inline-flex md:mx-2" />
@@ -92,7 +118,9 @@ export default function Header() {
             <button onClick={resetInput} className="flex-grow text-gray-500">
               Cancel
             </button>
-            <button className="flex-grow text-red-400">Search</button>
+            <button onClick={search} className="flex-grow text-red-400">
+              Search
+            </button>
           </div>
         </div>
       )}
